@@ -1,16 +1,17 @@
 {
   "_meta": {
     "type": "Synthetic Demo Data",
-    "description": "Fallback market, storage, and buyer data for AgriPredict AI Engine MVP testing."
+    "description": "Deterministic fallback dataset for AgriPredict AI Engine MVP decision optimization."
   },
   "markets": {
     "tomato": {
       "crop": "Tomato",
-      "current_price": 24.50,
+      "current_price": 20.00,
       "unit": "kg",
       "arrival_volume_tons": 180.5,
-      "trend": "glut_falling",
-      "location": "Nashik Regional Mandi"
+      "trend": "glut_recovering",
+      "location": "Nashik Regional Mandi",
+      "historical_prices": [16.5, 17.0, 17.5, 18.0, 18.5, 19.0, 19.5, 20.0]
     },
     "potato": {
       "crop": "Potato",
@@ -18,7 +19,8 @@
       "unit": "kg",
       "arrival_volume_tons": 320.0,
       "trend": "stable",
-      "location": "Agra Wholesale Market"
+      "location": "Agra Wholesale Market",
+      "historical_prices": [18.0, 18.1, 17.9, 18.0, 18.2, 18.0, 17.9, 18.0]
     },
     "onion": {
       "crop": "Onion",
@@ -26,15 +28,17 @@
       "unit": "kg",
       "arrival_volume_tons": 210.0,
       "trend": "rising",
-      "location": "Lasalgaon Mandi"
+      "location": "Lasalgaon Mandi",
+      "historical_prices": [24.0, 25.5, 27.0, 28.2, 29.5, 30.5, 31.2, 32.0]
     }
   },
   "storage_facilities": [
     {
       "facility_id": "CS-101",
       "name": "AgroChill Cold Logistics Hub",
+      "location": "Nashik Highway Zone B",
       "distance_km": 12.4,
-      "daily_cost_per_kg": 0.15,
+      "daily_cost_per_kg": 0.0714,
       "capacity_kg": 500000.0,
       "available_capacity_kg": 145000.0,
       "rating": 4.8
@@ -42,19 +46,31 @@
     {
       "facility_id": "CS-102",
       "name": "Kisan Vault Warehouse",
+      "location": "District Sector 4",
       "distance_km": 28.1,
-      "daily_cost_per_kg": 0.12,
+      "daily_cost_per_kg": 0.0500,
       "capacity_kg": 300000.0,
       "available_capacity_kg": 80000.0,
       "rating": 4.5
+    },
+    {
+      "facility_id": "CS-103",
+      "name": "EcoPreserve Rural Storage",
+      "location": "Green Agri Corridor",
+      "distance_km": 8.5,
+      "daily_cost_per_kg": 0.0850,
+      "capacity_kg": 200000.0,
+      "available_capacity_kg": 95000.0,
+      "rating": 4.6
     }
   ],
   "buyers": [
     {
       "buyer_id": "BY-301",
       "company_name": "FreshFoods Processing Ltd",
+      "buyer_type": "Food Processor",
       "demand_score": 94.5,
-      "offered_price_per_kg": 31.00,
+      "offered_price_per_kg": 26.50,
       "capacity_kg": 25000.0,
       "distance_km": 35.0,
       "preferred_crops": ["Tomato", "Potato"]
@@ -62,11 +78,22 @@
     {
       "buyer_id": "BY-302",
       "company_name": "GreenGrocer Hypermarket Chain",
+      "buyer_type": "Retail Chain",
       "demand_score": 88.0,
-      "offered_price_per_kg": 29.50,
+      "offered_price_per_kg": 25.00,
       "capacity_kg": 15000.0,
       "distance_km": 18.5,
       "preferred_crops": ["Tomato", "Onion"]
+    },
+    {
+      "buyer_id": "BY-303",
+      "company_name": "AgriExport Global Traders",
+      "buyer_type": "Institutional Exporter",
+      "demand_score": 91.0,
+      "offered_price_per_kg": 27.20,
+      "capacity_kg": 50000.0,
+      "distance_km": 50.0,
+      "preferred_crops": ["Tomato", "Onion", "Potato"]
     }
   ]
 }

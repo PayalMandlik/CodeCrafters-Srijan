@@ -3,30 +3,347 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriPredict AI Engine - MVP Dashboard</title>
+    <title>AgriPredict AI Engine - Decision Support Dashboard</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
+    <!-- App Header -->
     <header class="app-header">
-        <div class="logo">
-            <span class="icon">🌾</span> AgriPredict AI Engine
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-icon">🌾</span>
+                <div class="logo-text">
+                    <span class="brand-name">AgriPredict <span class="brand-ai">AI</span></span>
+                    <span class="brand-sub">Agricultural Market Intelligence</span>
+                </div>
+            </div>
+            <div class="header-status">
+                <span class="status-pill status-online">
+                    <span class="status-dot"></span> AI Engine Online
+                </span>
+                <span class="status-pill status-db">
+                    <span class="status-dot"></span> Supabase Active
+                </span>
+            </div>
         </div>
-        <div class="badge">MVP Scaffolding</div>
     </header>
 
+    <!-- Main Container -->
     <main class="container">
-        <section class="hero-card">
-            <h1>Decision Support System for Farmers</h1>
-            <p>Predict prices, solve cold-storage arbitrage, match verified buyers, and prevent harvest post-harvest loss.</p>
-        </section>
 
-        <section class="placeholder-section">
-            <h2>System Status</h2>
-            <div id="status-card" class="card">
-                <p>Initializing dashboard connection...</p>
+        <!-- Hero Section -->
+        <section class="hero-banner">
+            <div class="hero-content">
+                <h1>Decision Support Engine for Produce Sales</h1>
+                <p>Maximize harvest revenue by evaluating spot price forecasts, cold-storage arbitrage economics, and direct buyer demand.</p>
             </div>
         </section>
+
+        <!-- Section 1: Farmer Input Form -->
+        <section class="card input-card">
+            <div class="card-header">
+                <h2><span class="icon">📋</span> Harvest & Market Inputs</h2>
+                <div class="presets-group">
+                    <span class="preset-label">Demo Scenarios:</span>
+                    <button type="button" class="btn-preset" id="preset-store">🍅 Tomato Batch (Store & Hold)</button>
+                    <button type="button" class="btn-preset" id="preset-sell">🥔 Potato Batch (Sell Immediately)</button>
+                </div>
+            </div>
+
+            <form id="farmer-form" class="farmer-form">
+                <div class="form-grid">
+                    <!-- Crop Select -->
+                    <div class="form-group">
+                        <label for="crop">Crop Type <span class="required">*</span></label>
+                        <select id="crop" name="crop" required>
+                            <option value="Tomato">Tomato</option>
+                            <option value="Potato">Potato</option>
+                            <option value="Onion">Onion</option>
+                        </select>
+                    </div>
+
+                    <!-- Variety -->
+                    <div class="form-group">
+                        <label for="variety">Variety</label>
+                        <input type="text" id="variety" name="variety" value="Standard" placeholder="e.g. Roma / Hybrid">
+                    </div>
+
+                    <!-- Cultivation Area -->
+                    <div class="form-group">
+                        <label for="cultivation_area">Cultivation Area (Acres)</label>
+                        <input type="number" id="cultivation_area" name="cultivation_area" value="1.0" min="0.1" step="0.1">
+                    </div>
+
+                    <!-- Available Quantity -->
+                    <div class="form-group">
+                        <label for="quantity_kg">Available Quantity (kg) <span class="required">*</span></label>
+                        <input type="number" id="quantity_kg" name="quantity_kg" value="5000" min="1" step="100" required>
+                    </div>
+
+                    <!-- Harvest Window -->
+                    <div class="form-group">
+                        <label for="expected_harvest_window">Harvest Window</label>
+                        <select id="expected_harvest_window" name="expected_harvest_window">
+                            <option value="Immediate">Immediate (Harvested)</option>
+                            <option value="3 Days">Within 3 Days</option>
+                            <option value="7 Days">Next Week</option>
+                        </select>
+                    </div>
+
+                    <!-- Local Market -->
+                    <div class="form-group">
+                        <label for="local_market">Local Target Mandi</label>
+                        <input type="text" id="local_market" name="local_market" value="Nashik Mandi" placeholder="e.g. Nashik Mandi">
+                    </div>
+
+                    <!-- Location District -->
+                    <div class="form-group">
+                        <label for="location">Location / District</label>
+                        <input type="text" id="location" name="location" value="Nashik Agro Zone" placeholder="e.g. Nashik District">
+                    </div>
+
+                    <!-- Storage Horizon -->
+                    <div class="form-group">
+                        <label for="expected_storage_days">Storage Duration Target</label>
+                        <select id="expected_storage_days" name="expected_storage_days">
+                            <option value="14">14 Days (Standard)</option>
+                            <option value="21">21 Days (Extended)</option>
+                            <option value="30">30 Days (Maximum)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="analyze-btn" class="btn-primary">
+                        <span class="btn-icon">⚡</span> GET AI RECOMMENDATION
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Error Banner -->
+        <div id="error-banner" class="alert alert-danger hidden" role="alert">
+            <span class="alert-icon">⚠️</span>
+            <div id="error-message">Unable to complete analysis. Please verify inputs and try again.</div>
+        </div>
+
+        <!-- Initial Empty State Banner -->
+        <section id="initial-state" class="card empty-card">
+            <div class="empty-content">
+                <span class="empty-icon">📊</span>
+                <h3>Ready to Analyze Market Conditions</h3>
+                <p>Enter your crop and market details above and click <strong>"GET AI RECOMMENDATION"</strong> to generate spot price forecasts, cold-storage arbitrage economics, and buyer matches.</p>
+            </div>
+        </section>
+
+        <!-- Loading State Card -->
+        <section id="loading-card" class="card loading-card hidden">
+            <div class="spinner"></div>
+            <h3>Analyzing Market Conditions...</h3>
+            <div class="loading-steps">
+                <div class="step active"><span>✓</span> Ingesting spot market arrival data</div>
+                <div class="step active"><span>✓</span> Forecasting 14-30 day price trajectories</div>
+                <div class="step active"><span>✓</span> Solving cold-storage arbitrage differential</div>
+                <div class="step active"><span>✓</span> Ranking institutional buyers by demand score</div>
+            </div>
+        </section>
+
+        <!-- Results Container (Hidden until analysis completes) -->
+        <div id="results-container" class="results-container hidden">
+
+            <!-- Section 4: Visually Dominant Recommendation Card -->
+            <section id="recommendation-section" class="recommendation-section">
+                <!-- Content injected dynamically via JS -->
+            </section>
+
+            <!-- Section 2: Current Market Snapshot -->
+            <section class="snapshot-grid">
+                <div class="card snapshot-card">
+                    <span class="snapshot-label">Current Spot Price</span>
+                    <div class="snapshot-value" id="snap-price">₹0.00/kg</div>
+                    <span class="snapshot-sub" id="snap-market">Local Mandi</span>
+                </div>
+                <div class="card snapshot-card">
+                    <span class="snapshot-label">Arrival Volume</span>
+                    <div class="snapshot-value" id="snap-volume">0 Tons</div>
+                    <span class="snapshot-sub">Regional Daily Arrivals</span>
+                </div>
+                <div class="card snapshot-card">
+                    <span class="snapshot-label">Market Trend</span>
+                    <div class="snapshot-value text-accent" id="snap-trend">Stable</div>
+                    <span class="snapshot-sub">Supply Momentum</span>
+                </div>
+                <div class="card snapshot-card">
+                    <span class="snapshot-label">Batch Quantity</span>
+                    <div class="snapshot-value" id="snap-qty">0 kg</div>
+                    <span class="snapshot-sub" id="snap-crop">Crop</span>
+                </div>
+            </section>
+
+            <!-- Section 3: Price Forecast & Chart -->
+            <section class="card chart-card">
+                <div class="card-header">
+                    <h2><span class="icon">📈</span> Spot Price Forecast Trajectory</h2>
+                    <div class="forecast-badges">
+                        <span class="badge badge-horizon" id="forecast-horizon-badge">14-Day Horizon</span>
+                        <span class="badge badge-confidence" id="forecast-confidence-badge">85% Confidence</span>
+                    </div>
+                </div>
+
+                <div class="forecast-meta-grid">
+                    <div class="meta-item">
+                        <span class="meta-label">Current Price</span>
+                        <span class="meta-value" id="fc-current">₹0.00/kg</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Projected Horizon Price</span>
+                        <span class="meta-value text-green" id="fc-projected">₹0.00/kg</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Peak Price (Day)</span>
+                        <span class="meta-value" id="fc-peak">₹0.00/kg (Day 14)</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Projected Growth</span>
+                        <span class="meta-value text-green" id="fc-growth">+0.0%</span>
+                    </div>
+                </div>
+
+                <!-- SVG Line Chart Container -->
+                <div class="chart-wrapper">
+                    <div id="svg-chart-container" class="svg-chart-container">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <div class="forecast-explanation" id="forecast-reasons-box">
+                    <!-- Reasons list injected by JS -->
+                </div>
+            </section>
+
+            <!-- Section 5: Profit & Arbitrage Financial Breakdown -->
+            <section class="card arbitrage-card">
+                <div class="card-header">
+                    <h2><span class="icon">⚖️</span> Cold-Storage Arbitrage Economics</h2>
+                    <span class="badge badge-neutral" id="arb-days-badge">14 Days Storage</span>
+                </div>
+
+                <div class="arbitrage-grid">
+                    <div class="arb-card arb-item-base">
+                        <span class="arb-label">Immediate Sale Revenue</span>
+                        <div class="arb-value" id="arb-immediate">₹0.00</div>
+                        <span class="arb-sub">Sold today at spot price</span>
+                    </div>
+                    <div class="arb-card arb-item-future">
+                        <span class="arb-label">Gross Deferred Value</span>
+                        <div class="arb-value" id="arb-future">₹0.00</div>
+                        <span class="arb-sub">At projected horizon price</span>
+                    </div>
+                    <div class="arb-card arb-item-spoilage">
+                        <span class="arb-label">Spoilage Loss Impact</span>
+                        <div class="arb-value text-danger" id="arb-spoilage">-₹0.00</div>
+                        <span class="arb-sub" id="arb-spoilage-rate">Estimated 0% perishability</span>
+                    </div>
+                    <div class="arb-card arb-item-cost">
+                        <span class="arb-label">Storage & Freight Fees</span>
+                        <div class="arb-value text-danger" id="arb-costs">-₹0.00</div>
+                        <span class="arb-sub" id="arb-costs-sub">Storage + Freight transit</span>
+                    </div>
+                </div>
+
+                <div class="net-advantage-banner" id="net-advantage-banner">
+                    <div class="adv-label">Net Economic Advantage ($\Delta P \times Quantity$)</div>
+                    <div class="adv-value" id="arb-net-diff">+₹0.00</div>
+                    <div class="adv-sub" id="arb-break-even">Break-even Spot Price: ₹0.00/kg</div>
+                </div>
+            </section>
+
+            <!-- Dual Grid: Storage Facility & Why Decision -->
+            <div class="dual-grid">
+                <!-- Section 6: Recommended Storage Facility -->
+                <section class="card storage-card">
+                    <div class="card-header">
+                        <h2><span class="icon">🏭</span> Optimal Cold Storage Facility</h2>
+                        <span class="badge badge-success">RECOMMENDED</span>
+                    </div>
+
+                    <div id="storage-details" class="storage-details">
+                        <!-- Injected by JS -->
+                    </div>
+                </section>
+
+                <!-- Section 8: Why This Recommendation (Explainability) -->
+                <section class="card reasons-card">
+                    <div class="card-header">
+                        <h2><span class="icon">💡</span> Why This Recommendation?</h2>
+                    </div>
+
+                    <div class="reasons-block">
+                        <h4>Key Decision Drivers</h4>
+                        <ul id="reasons-list" class="styled-list list-reasons">
+                            <!-- Injected by JS -->
+                        </ul>
+
+                        <h4 class="risk-header">Key Risk Factors</h4>
+                        <ul id="risks-list" class="styled-list list-risks">
+                            <!-- Injected by JS -->
+                        </ul>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Section 7: Buyer Matching -->
+            <section class="card buyers-card">
+                <div class="card-header">
+                    <h2><span class="icon">🤝</span> Verified Buyer Matchmaking</h2>
+                    <span class="badge badge-neutral">Ranked by Demand & Capacity</span>
+                </div>
+
+                <div id="buyers-list-container" class="buyers-list-container">
+                    <!-- Buyer cards injected by JS -->
+                </div>
+            </section>
+
+            <!-- Section 9: Executive Decision Summary -->
+            <section class="card summary-card">
+                <div class="card-header">
+                    <h2><span class="icon">📌</span> Executive Harvest Summary</h2>
+                </div>
+
+                <div class="summary-table-wrapper">
+                    <table class="summary-table">
+                        <tbody>
+                            <tr>
+                                <th>Crop Batch</th>
+                                <td id="sum-crop">Tomato (5,000 kg)</td>
+                                <th>Spot vs Forecast</th>
+                                <td id="sum-prices">₹20.00 → ₹26.55 / kg</td>
+                            </tr>
+                            <tr>
+                                <th>AI Recommendation</th>
+                                <td id="sum-action"><strong class="text-green">STORE & HOLD</strong></td>
+                                <th>Net Advantage</th>
+                                <td id="sum-adv" class="text-green font-bold">+₹16,950.00 (+17.0%)</td>
+                            </tr>
+                            <tr>
+                                <th>Selected Storage</th>
+                                <td id="sum-storage">AgroChill Cold Logistics Hub (12.4 km)</td>
+                                <th>Top Matched Buyer</th>
+                                <td id="sum-buyer">FreshFoods Processing Ltd (Match: 90.3/100)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div> <!-- /results-container -->
+
     </main>
+
+    <!-- App Footer -->
+    <footer class="app-footer">
+        <p>AgriPredict AI Engine MVP &copy; 2026. Data-Driven Agricultural Supply Chain Optimization.</p>
+    </footer>
 
     <script src="/static/js/app.js"></script>
 </body>
