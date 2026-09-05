@@ -36,7 +36,7 @@ class MarketService:
         if self.db:
             try:
                 # Query market_prices ordered by recorded_at descending
-                response = self.db.table("market_prices").select("*").ilike("crop", crop_clean).order("recorded_at", desc=True).execute()
+                response = self.db.table("market_prices").select("*").ilike("crop", f"%{crop_clean}%").order("recorded_at", desc=True).execute()
                 if response.data and len(response.data) > 0:
                     records = response.data
                     latest = records[0]
