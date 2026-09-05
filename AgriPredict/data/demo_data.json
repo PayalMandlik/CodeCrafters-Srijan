@@ -1,0 +1,72 @@
+{
+  "_meta": {
+    "type": "Synthetic Demo Data",
+    "description": "Fallback market, storage, and buyer data for AgriPredict AI Engine MVP testing."
+  },
+  "markets": {
+    "tomato": {
+      "crop": "Tomato",
+      "current_price": 24.50,
+      "unit": "kg",
+      "arrival_volume_tons": 180.5,
+      "trend": "glut_falling",
+      "location": "Nashik Regional Mandi"
+    },
+    "potato": {
+      "crop": "Potato",
+      "current_price": 18.00,
+      "unit": "kg",
+      "arrival_volume_tons": 320.0,
+      "trend": "stable",
+      "location": "Agra Wholesale Market"
+    },
+    "onion": {
+      "crop": "Onion",
+      "current_price": 32.00,
+      "unit": "kg",
+      "arrival_volume_tons": 210.0,
+      "trend": "rising",
+      "location": "Lasalgaon Mandi"
+    }
+  },
+  "storage_facilities": [
+    {
+      "facility_id": "CS-101",
+      "name": "AgroChill Cold Logistics Hub",
+      "distance_km": 12.4,
+      "daily_cost_per_kg": 0.15,
+      "capacity_kg": 500000.0,
+      "available_capacity_kg": 145000.0,
+      "rating": 4.8
+    },
+    {
+      "facility_id": "CS-102",
+      "name": "Kisan Vault Warehouse",
+      "distance_km": 28.1,
+      "daily_cost_per_kg": 0.12,
+      "capacity_kg": 300000.0,
+      "available_capacity_kg": 80000.0,
+      "rating": 4.5
+    }
+  ],
+  "buyers": [
+    {
+      "buyer_id": "BY-301",
+      "company_name": "FreshFoods Processing Ltd",
+      "demand_score": 94.5,
+      "offered_price_per_kg": 31.00,
+      "capacity_kg": 25000.0,
+      "distance_km": 35.0,
+      "preferred_crops": ["Tomato", "Potato"]
+    },
+    {
+      "buyer_id": "BY-302",
+      "company_name": "GreenGrocer Hypermarket Chain",
+      "demand_score": 88.0,
+      "offered_price_per_kg": 29.50,
+      "capacity_kg": 15000.0,
+      "distance_km": 18.5,
+      "preferred_crops": ["Tomato", "Onion"]
+    }
+  ]
+}
