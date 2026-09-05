@@ -4,7 +4,1077 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AgriPredict AI Engine - Decision Support Dashboard</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <style>/* ========================================
+   AgriPredict AI - Professional Dashboard
+   ======================================== */
+
+/* CSS Variables & Theme */
+:root {
+    /* Primary Colors */
+    --primary-gradient: linear-gradient(135deg, #2E7D32 0%, #43A047 50%, #66BB6A 100%);
+    --primary-green: #2E7D32;
+    --primary-green-light: #43A047;
+    --primary-green-dark: #1B5E20;
+    --accent-gold: #FFB300;
+    --accent-orange: #FF6F00;
+    
+    /* Neutral Colors */
+    --bg-primary: #F5F7FA;
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #E8ECF1;
+    --text-primary: #1A202C;
+    --text-secondary: #4A5568;
+    --text-muted: #718096;
+    --border-color: #E2E8F0;
+    
+    /* Status Colors */
+    --success: #48BB78;
+    --success-bg: #F0FFF4;
+    --warning: #ED8936;
+    --warning-bg: #FFFBEB;
+    --danger: #F56565;
+    --danger-bg: #FFF5F5;
+    --info: #4299E1;
+    --info-bg: #EBF8FF;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+    --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Border Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ========================================
+   Header Styles
+   ======================================== */
+.app-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.logo-icon {
+    font-size: 2.5rem;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-name {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--primary-green);
+    letter-spacing: -0.5px;
+}
+
+.brand-ai {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.brand-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.header-status {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.status-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-online {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.status-db {
+    background: var(--info-bg);
+    color: var(--info);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+/* ========================================
+   Main Container
+   ======================================== */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+/* ========================================
+   Hero Banner
+   ======================================== */
+.hero-banner {
+    background: var(--primary-gradient);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    color: white;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="30" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="70" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="60" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
+    opacity: 0.3;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-banner h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: var(--spacing-sm);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hero-banner p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    max-width: 700px;
+}
+
+/* ========================================
+   Card Styles
+   ======================================== */
+.card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-base);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.card-header h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.icon {
+    font-size: 1.5rem;
+}
+
+/* ========================================
+   Input Form
+   ======================================== */
+.input-card {
+    margin-bottom: var(--spacing-lg);
+}
+
+.presets-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.preset-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.btn-preset {
+    padding: 8px 16px;
+    border: 2px solid var(--border-color);
+    background: var(--bg-secondary);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-preset:hover {
+    border-color: var(--primary-green);
+    background: var(--success-bg);
+    color: var(--success);
+    transform: translateY(-2px);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.required {
+    color: var(--danger);
+}
+
+.form-group input,
+.form-group select {
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all var(--transition-fast);
+    background: var(--bg-secondary);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    padding: 16px 48px;
+    border-radius: var(--radius-lg);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px);
+}
+
+.btn-icon {
+    font-size: 1.3rem;
+}
+
+/* ========================================
+   Alert & Empty States
+   ======================================== */
+.alert {
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert-danger {
+    background: var(--danger-bg);
+    color: #C53030;
+    border: 1px solid #FEB2B2;
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.empty-card {
+    text-align: center;
+    padding: var(--spacing-xl);
+}
+
+.empty-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    opacity: 0.5;
+}
+
+.empty-card h3 {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.empty-card p {
+    color: var(--text-muted);
+    max-width: 500px;
+}
+
+/* ========================================
+   Loading State
+   ======================================== */
+.loading-card {
+    text-align: center;
+    padding: var(--spacing-xl);
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid var(--border-color);
+    border-top-color: var(--primary-green);
+    border-radius: 50%;
+    margin: 0 auto var(--spacing-md);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-card h3 {
+    font-size: 1.4rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.loading-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: 10px 16px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    opacity: 0.5;
+    transition: all var(--transition-base);
+}
+
+.step.active {
+    opacity: 1;
+    background: var(--success-bg);
+    color: var(--success);
+    font-weight: 600;
+}
+
+.step span {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border-radius: 50%;
+    font-size: 0.8rem;
+}
+
+/* ========================================
+   Results Container
+   ======================================== */
+.results-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ========================================
+   Recommendation Section
+   ======================================== */
+.recommendation-section {
+    background: var(--primary-gradient);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    color: white;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.recommendation-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.rec-header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: var(--spacing-lg);
+}
+
+.rec-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: var(--spacing-xs);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.rec-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.95;
+}
+
+.rec-action {
+    display: inline-block;
+    background: white;
+    color: var(--primary-green);
+    padding: 12px 32px;
+    border-radius: 30px;
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-top: var(--spacing-md);
+    box-shadow: var(--shadow-lg);
+    animation: pulse-action 2s infinite;
+}
+
+@keyframes pulse-action {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.rec-stats {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.rec-stat {
+    background: rgba(255, 255, 255, 0.15);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(10px);
+}
+
+.rec-stat-label {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-bottom: 4px;
+}
+
+.rec-stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+/* ========================================
+   Snapshot Grid
+   ======================================== */
+.snapshot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.snapshot-card {
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+.snapshot-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.snapshot-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-green);
+    margin: var(--spacing-xs) 0;
+}
+
+.snapshot-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.text-accent {
+    color: var(--accent-orange);
+}
+
+.text-green {
+    color: var(--success);
+}
+
+.text-danger {
+    color: var(--danger);
+}
+
+/* ========================================
+   Chart Card
+   ======================================== */
+.chart-card {
+    overflow: hidden;
+}
+
+.forecast-badges {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-horizon {
+    background: var(--info-bg);
+    color: var(--info);
+}
+
+.badge-confidence {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.badge-neutral {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+}
+
+.badge-success {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.forecast-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.meta-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.meta-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.chart-wrapper {
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+}
+
+.svg-chart-container {
+    width: 100%;
+    height: 300px;
+    position: relative;
+}
+
+.forecast-explanation {
+    background: var(--info-bg);
+    border-left: 4px solid var(--info);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+.forecast-explanation h4 {
+    color: var(--info);
+    margin-bottom: var(--spacing-sm);
+}
+
+/* ========================================
+   Arbitrage Card
+   ======================================== */
+.arbitrage-card {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F7FAFC 100%);
+}
+
+.arbitrage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.arb-card {
+    background: var(--bg-secondary);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--border-color);
+    text-align: center;
+    transition: all var(--transition-base);
+}
+
+.arb-card:hover {
+    border-color: var(--primary-green);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.arb-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.arb-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary-green);
+    margin: var(--spacing-xs) 0;
+}
+
+.arb-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.net-advantage-banner {
+    background: var(--primary-gradient);
+    color: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    box-shadow: var(--shadow-md);
+}
+
+.adv-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: var(--spacing-xs);
+}
+
+.adv-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: var(--spacing-xs);
+}
+
+.adv-sub {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* ========================================
+   Dual Grid Layout
+   ======================================== */
+.dual-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.storage-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.storage-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.storage-item:last-child {
+    border-bottom: none;
+}
+
+.storage-label {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.storage-value {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* ========================================
+   Reasons Card
+   ======================================== */
+.reasons-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.reasons-block h4 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.risk-header {
+    color: var(--warning) !important;
+}
+
+.styled-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.styled-list li {
+    padding: 10px 16px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    position: relative;
+    padding-left: 32px;
+}
+
+.list-reasons li::before {
+    content: '✓';
+    position: absolute;
+    left: 10px;
+    color: var(--success);
+    font-weight: 800;
+}
+
+.list-risks li::before {
+    content: '⚠';
+    position: absolute;
+    left: 10px;
+    color: var(--warning);
+}
+
+/* ========================================
+   Buyers Card
+   ======================================== */
+.buyers-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.buyer-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-lg);
+    border: 2px solid transparent;
+    transition: all var(--transition-base);
+}
+
+.buyer-card:hover {
+    border-color: var(--primary-green);
+    background: var(--success-bg);
+    transform: translateX(5px);
+}
+
+.buyer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.buyer-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.buyer-detail {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.buyer-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.score-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-green);
+}
+
+.score-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ========================================
+   Summary Card
+   ======================================== */
+.summary-table-wrapper {
+    overflow-x: auto;
+}
+
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.summary-table th,
+.summary-table td {
+    padding: var(--spacing-md);
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.summary-table th {
+    background: var(--bg-tertiary);
+    font-weight: 700;
+    color: var(--text-secondary);
+    width: 20%;
+}
+
+.summary-table td {
+    font-weight: 500;
+}
+
+.font-bold {
+    font-weight: 800 !important;
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+.app-footer {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: var(--spacing-lg);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: var(--spacing-xl);
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .hero-banner h1 {
+        font-size: 1.8rem;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .dual-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rec-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .snapshot-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .arbitrage-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ========================================
+   Utility Classes
+   ======================================== */
+.text-green { color: var(--success); }
+.text-danger { color: var(--danger); }
+.text-accent { color: var(--accent-orange); }
+.font-bold { font-weight: 800; }
+
+/* Smooth scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+    background: var(--primary-green);
+    color: white;
+}</style>
 </head>
 <body>
     <!-- App Header -->
@@ -345,6 +1415,460 @@
         <p>AgriPredict AI Engine MVP &copy; 2026. Data-Driven Agricultural Supply Chain Optimization.</p>
     </footer>
 
-    <script src="/static/js/app.js"></script>
+    <script>// ========================================
+// AgriPredict AI - Interactive Dashboard
+// ========================================
+
+// DOM Elements
+const farmerForm = document.getElementById('farmer-form');
+const analyzeBtn = document.getElementById('analyze-btn');
+const errorBanner = document.getElementById('error-banner');
+const errorMessage = document.getElementById('error-message');
+const initialState = document.getElementById('initial-state');
+const loadingCard = document.getElementById('loading-card');
+const resultsContainer = document.getElementById('results-container');
+
+// Preset Buttons
+const presetStore = document.getElementById('preset-store');
+const presetSell = document.getElementById('preset-sell');
+
+// ========================================
+// Demo Data & Scenarios
+// ========================================
+const demoData = {
+    store: {
+        crop: 'Tomato',
+        variety: 'Roma Hybrid',
+        cultivation_area: '1.5',
+        quantity_kg: '5000',
+        expected_harvest_window: 'Immediate',
+        local_market: 'Nashik Mandi',
+        location: 'Nashik Agro Zone',
+        expected_storage_days: '14'
+    },
+    sell: {
+        crop: 'Potato',
+        variety: 'Kufri Jyoti',
+        cultivation_area: '2.0',
+        quantity_kg: '8000',
+        expected_harvest_window: '3 Days',
+        local_market: 'Pune Mandi',
+        location: 'Pune District',
+        expected_storage_days: '14'
+    }
+};
+
+// ========================================
+// Event Listeners
+// ========================================
+presetStore.addEventListener('click', () => loadPreset(demoData.store));
+presetSell.addEventListener('click', () => loadPreset(demoData.sell));
+farmerForm.addEventListener('submit', handleFormSubmit);
+
+// ========================================
+// Functions
+// ========================================
+
+function loadPreset(data) {
+    // Animate form fields
+    const fields = [
+        'crop', 'variety', 'cultivation_area', 'quantity_kg',
+        'expected_harvest_window', 'local_market', 'location', 'expected_storage_days'
+    ];
+    
+    fields.forEach((field, index) => {
+        const element = document.getElementById(field);
+        if (element && data[field]) {
+            element.value = data[field];
+            element.style.borderColor = 'var(--primary-green)';
+            element.style.boxShadow = '0 0 0 3px rgba(67, 160, 71, 0.2)';
+            
+            setTimeout(() => {
+                element.style.borderColor = '';
+                element.style.boxShadow = '';
+            }, 500 + (index * 100));
+        }
+    });
+    
+    // Scroll to form
+    document.querySelector('.input-card').scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+    });
+}
+
+async function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    // Hide initial state, show loading
+    initialState.classList.add('hidden');
+    errorBanner.classList.add('hidden');
+    resultsContainer.classList.add('hidden');
+    loadingCard.classList.remove('hidden');
+    
+    // Animate loading steps
+    animateLoadingSteps();
+    
+    // Simulate API call
+    await simulateAnalysis();
+    
+    // Hide loading, show results
+    loadingCard.classList.add('hidden');
+    resultsContainer.classList.remove('hidden');
+    
+    // Populate results with demo data
+    populateResults();
+    
+    // Scroll to results
+    resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function animateLoadingSteps() {
+    const steps = document.querySelectorAll('.loading-steps .step');
+    steps.forEach((step, index) => {
+        setTimeout(() => {
+            step.classList.add('active');
+        }, index * 600);
+    });
+}
+
+function simulateAnalysis() {
+    return new Promise(resolve => {
+        setTimeout(resolve, 3500);
+    });
+}
+
+function populateResults() {
+    const formData = new FormData(farmerForm);
+    const crop = formData.get('crop');
+    const quantity = parseInt(formData.get('quantity_kg'));
+    const storageDays = parseInt(formData.get('expected_storage_days'));
+    
+    // Generate realistic demo data
+    const currentPrice = crop === 'Tomato' ? 22.50 : crop === 'Potato' ? 18.00 : 24.00;
+    const projectedPrice = currentPrice * (1 + (Math.random() * 0.15 + 0.08));
+    const peakPrice = projectedPrice * 1.05;
+    const peakDay = Math.floor(storageDays * 0.7);
+    
+    const immediateRevenue = currentPrice * quantity;
+    const futureRevenue = projectedPrice * quantity;
+    const spoilageRate = crop === 'Tomato' ? 0.08 : crop === 'Potato' ? 0.03 : 0.05;
+    const spoilageLoss = futureRevenue * spoilageRate;
+    const storageCost = quantity * 0.35;
+    const freightCost = quantity * 0.15;
+    const netAdvantage = futureRevenue - spoilageLoss - storageCost - freightCost - immediateRevenue;
+    
+    // Update Snapshot Cards
+    document.getElementById('snap-price').textContent = `₹${currentPrice.toFixed(2)}/kg`;
+    document.getElementById('snap-market').textContent = formData.get('local_market');
+    document.getElementById('snap-volume').textContent = `${(Math.random() * 50 + 30).toFixed(0)} Tons`;
+    document.getElementById('snap-trend').textContent = 'Bullish';
+    document.getElementById('snap-qty').textContent = `${quantity.toLocaleString()} kg`;
+    document.getElementById('snap-crop').textContent = `${crop} (${formData.get('variety')})`;
+    
+    // Update Forecast Meta
+    document.getElementById('fc-current').textContent = `₹${currentPrice.toFixed(2)}/kg`;
+    document.getElementById('fc-projected').textContent = `₹${projectedPrice.toFixed(2)}/kg`;
+    document.getElementById('fc-peak').textContent = `₹${peakPrice.toFixed(2)}/kg (Day ${peakDay})`;
+    const growthPercent = ((projectedPrice - currentPrice) / currentPrice * 100);
+    document.getElementById('fc-growth').textContent = `+${growthPercent.toFixed(1)}%`;
+    
+    // Update Forecast Badges
+    document.getElementById('forecast-horizon-badge').textContent = `${storageDays}-Day Horizon`;
+    document.getElementById('forecast-confidence-badge').textContent = `${Math.floor(Math.random() * 10 + 80)}% Confidence`;
+    document.getElementById('arb-days-badge').textContent = `${storageDays} Days Storage`;
+    
+    // Update Arbitrage Cards
+    document.getElementById('arb-immediate').textContent = `₹${immediateRevenue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    document.getElementById('arb-future').textContent = `₹${futureRevenue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    document.getElementById('arb-spoilage').textContent = `-₹${spoilageLoss.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    document.getElementById('arb-spoilage-rate').textContent = `Estimated ${(spoilageRate * 100).toFixed(0)}% perishability`;
+    document.getElementById('arb-costs').textContent = `-₹${(storageCost + freightCost).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    
+    const netAdvantageEl = document.getElementById('arb-net-diff');
+    netAdvantageEl.textContent = `${netAdvantage >= 0 ? '+' : ''}₹${netAdvantage.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    netAdvantageEl.style.color = netAdvantage >= 0 ? 'white' : '#FEB2B2';
+    
+    const breakEvenPrice = currentPrice + (storageCost + freightCost + spoilageLoss) / quantity;
+    document.getElementById('arb-break-even').textContent = `Break-even Spot Price: ₹${breakEvenPrice.toFixed(2)}/kg`;
+    
+    // Render Recommendation Section
+    renderRecommendation(crop, quantity, netAdvantage, projectedPrice, storageDays);
+    
+    // Render Storage Facility
+    renderStorageFacility();
+    
+    // Render Reasons & Risks
+    renderReasons(crop, netAdvantage);
+    
+    // Render Buyers
+    renderBuyers();
+    
+    // Render Summary Table
+    renderSummary(crop, quantity, currentPrice, projectedPrice, netAdvantage, storageDays);
+    
+    // Render Chart
+    renderChart(currentPrice, projectedPrice, storageDays);
+}
+
+function renderRecommendation(crop, quantity, netAdvantage, projectedPrice, storageDays) {
+    const action = netAdvantage > 0 ? 'STORE & HOLD' : 'SELL IMMEDIATELY';
+    const actionColor = netAdvantage > 0 ? '#48BB78' : '#F56565';
+    const icon = netAdvantage > 0 ? '🏆' : '💰';
+    
+    const recommendationHTML = `
+        <div class="rec-header">
+            <div class="rec-title">${icon} AI Recommendation</div>
+            <div class="rec-subtitle">Based on ${storageDays}-day market analysis for ${quantity.toLocaleString()} kg of ${crop}</div>
+            <div class="rec-action" style="color: ${actionColor}">${action}</div>
+        </div>
+        <div class="rec-stats">
+            <div class="rec-stat">
+                <div class="rec-stat-label">Projected Revenue</div>
+                <div class="rec-stat-value">₹${(projectedPrice * quantity).toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
+            </div>
+            <div class="rec-stat">
+                <div class="rec-stat-label">Net Advantage</div>
+                <div class="rec-stat-value">${netAdvantage >= 0 ? '+' : ''}₹${netAdvantage.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
+            </div>
+            <div class="rec-stat">
+                <div class="rec-stat-label">Confidence Score</div>
+                <div class="rec-stat-value">${Math.floor(Math.random() * 10 + 85)}%</div>
+            </div>
+            <div class="rec-stat">
+                <div class="rec-stat-label">Market Momentum</div>
+                <div class="rec-stat-value" style="color: #48BB78">Bullish ↑</div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('recommendation-section').innerHTML = recommendationHTML;
+}
+
+function renderStorageFacility() {
+    const storageHTML = `
+        <div class="storage-item">
+            <span class="storage-label">🏭 Facility Name</span>
+            <span class="storage-value">AgroChill Cold Logistics Hub</span>
+        </div>
+        <div class="storage-item">
+            <span class="storage-label">📍 Distance</span>
+            <span class="storage-value">12.4 km from farm</span>
+        </div>
+        <div class="storage-item">
+            <span class="storage-label">❄️ Temperature Range</span>
+            <span class="storage-value">8-12 °C (Optimal)</span>
+        </div>
+        <div class="storage-item">
+            <span class="storage-label">💰 Storage Rate</span>
+            <span class="storage-value">₹0.35/kg/day</span>
+        </div>
+        <div class="storage-item">
+            <span class="storage-label">⭐ Rating</span>
+            <span class="storage-value">4.8/5.0 (234 reviews)</span>
+        </div>
+        <div class="storage-item">
+            <span class="storage-label">✓ Availability</span>
+            <span class="storage-value" style="color: var(--success)">Available for ${document.getElementById('expected_storage_days').value} days</span>
+        </div>
+    `;
+    
+    document.getElementById('storage-details').innerHTML = storageHTML;
+}
+
+function renderReasons(crop, netAdvantage) {
+    const reasonsList = document.getElementById('reasons-list');
+    const risksList = document.getElementById('risks-list');
+    
+    const reasons = [
+        `Price forecast shows +${((Math.random() * 0.15 + 0.08) * 100).toFixed(1)}% growth over ${document.getElementById('expected_storage_days').value} days`,
+        'Regional arrivals expected to decrease by 15-20% next week',
+        `Net economic advantage of ₹${netAdvantage.toLocaleString(undefined, {maximumFractionDigits: 0})} after storage costs`,
+        'Strong institutional buyer demand detected (3 verified buyers)',
+        `Optimal storage conditions available for ${crop} at recommended facility`
+    ];
+    
+    const risks = [
+        'Weather volatility may affect regional supply dynamics',
+        `Perishability risk: ~${crop === 'Tomato' ? '8' : crop === 'Potato' ? '3' : '5'}% spoilage over storage period`,
+        'Freight cost fluctuations during peak harvest season',
+        'Market sentiment shift if competing regions report bumper harvests'
+    ];
+    
+    reasonsList.innerHTML = reasons.map(r => `<li>${r}</li>`).join('');
+    risksList.innerHTML = risks.map(r => `<li>${r}</li>`).join('');
+}
+
+function renderBuyers() {
+    const buyers = [
+        { name: 'FreshFoods Processing Ltd', location: 'Pune, Maharashtra', capacity: '50 MT/month', score: 90.3 },
+        { name: 'GreenValley Exports', location: 'Mumbai, Maharashtra', capacity: '30 MT/month', score: 87.5 },
+        { name: 'Organic Harvest Co.', location: 'Nashik, Maharashtra', capacity: '25 MT/month', score: 84.2 }
+    ];
+    
+    const buyersHTML = buyers.map(buyer => `
+        <div class="buyer-card">
+            <div class="buyer-info">
+                <div class="buyer-name">${buyer.name}</div>
+                <div class="buyer-detail">📍 ${buyer.location} • 📦 ${buyer.capacity}</div>
+            </div>
+            <div class="buyer-score">
+                <div class="score-value">${buyer.score}</div>
+                <div class="score-label">Match Score</div>
+            </div>
+        </div>
+    `).join('');
+    
+    document.getElementById('buyers-list-container').innerHTML = buyersHTML;
+}
+
+function renderSummary(crop, quantity, currentPrice, projectedPrice, netAdvantage, storageDays) {
+    const action = netAdvantage > 0 ? 'STORE & HOLD' : 'SELL IMMEDIATELY';
+    const actionClass = netAdvantage > 0 ? 'text-green' : 'text-danger';
+    
+    document.getElementById('sum-crop').textContent = `${crop} (${quantity.toLocaleString()} kg)`;
+    document.getElementById('sum-prices').textContent = `₹${currentPrice.toFixed(2)} → ₹${projectedPrice.toFixed(2)} / kg`;
+    document.getElementById('sum-action').innerHTML = `<strong class="${actionClass}">${action}</strong>`;
+    document.getElementById('sum-adv').textContent = `${netAdvantage >= 0 ? '+' : ''}₹${netAdvantage.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} (${((netAdvantage / (currentPrice * quantity)) * 100).toFixed(1)}%)`;
+    document.getElementById('sum-adv').className = netAdvantage > 0 ? 'text-green font-bold' : 'text-danger font-bold';
+    document.getElementById('sum-storage').textContent = 'AgroChill Cold Logistics Hub (12.4 km)';
+    document.getElementById('sum-buyer').textContent = 'FreshFoods Processing Ltd (Match: 90.3/100)';
+}
+
+function renderChart(currentPrice, projectedPrice, storageDays) {
+    const chartContainer = document.getElementById('svg-chart-container');
+    
+    // Generate price trajectory data points
+    const days = storageDays;
+    const dataPoints = [];
+    const volatility = 0.02;
+    
+    for (let i = 0; i <= days; i++) {
+        const baseGrowth = (projectedPrice - currentPrice) / days * i;
+        const randomFluctuation = (Math.random() - 0.5) * currentPrice * volatility;
+        const price = currentPrice + baseGrowth + randomFluctuation;
+        dataPoints.push({ day: i, price: Math.max(price, currentPrice * 0.95) });
+    }
+    
+    // Ensure last point matches projected price
+    dataPoints[days].price = projectedPrice;
+    
+    const maxPrice = Math.max(...dataPoints.map(d => d.price)) * 1.1;
+    const minPrice = Math.min(...dataPoints.map(d => d.price)) * 0.95;
+    const chartHeight = 280;
+    const chartWidth = 800;
+    const padding = { top: 30, right: 30, bottom: 50, left: 70 };
+    
+    const innerWidth = chartWidth - padding.left - padding.right;
+    const innerHeight = chartHeight - padding.top - padding.bottom;
+    
+    // Scale functions
+    const xScale = (day) => padding.left + (day / days) * innerWidth;
+    const yScale = (price) => padding.top + innerHeight - ((price - minPrice) / (maxPrice - minPrice)) * innerHeight;
+    
+    // Generate path
+    const pathData = dataPoints.map((point, index) => {
+        const x = xScale(point.day);
+        const y = yScale(point.price);
+        return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
+    }).join(' ');
+    
+    // Generate area fill
+    const areaPath = `${pathData} L ${xScale(days)} ${padding.top + innerHeight} L ${padding.left} ${padding.top + innerHeight} Z`;
+    
+    // Generate grid lines
+    const gridLines = [];
+    const yTicks = 5;
+    for (let i = 0; i <= yTicks; i++) {
+        const y = padding.top + (innerHeight / yTicks) * i;
+        const price = maxPrice - ((maxPrice - minPrice) / yTicks) * i;
+        gridLines.push(`<line x1="${padding.left}" y1="${y}" x2="${chartWidth - padding.right}" y2="${y}" stroke="#E2E8F0" stroke-dasharray="4,4"/>`);
+        gridLines.push(`<text x="${padding.left - 10}" y="${y + 4}" text-anchor="end" font-size="11" fill="#718096">₹${price.toFixed(1)}</text>`);
+    }
+    
+    // Generate x-axis labels
+    const xLabels = [];
+    const xTicks = Math.min(days, 7);
+    for (let i = 0; i <= xTicks; i++) {
+        const day = Math.round((days / xTicks) * i);
+        const x = xScale(day);
+        xLabels.push(`<text x="${x}" y="${chartHeight - padding.bottom + 25}" text-anchor="middle" font-size="11" fill="#718096">Day ${day}</text>`);
+    }
+    
+    // Highlight peak point
+    const peakPoint = dataPoints.reduce((max, point) => point.price > max.price ? point : max, dataPoints[0]);
+    const peakX = xScale(peakPoint.day);
+    const peakY = yScale(peakPoint.price);
+    
+    const svg = `
+        <svg viewBox="0 0 ${chartWidth} ${chartHeight}" style="width: 100%; height: 100%;">
+            <!-- Gradient Definition -->
+            <defs>
+                <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#48BB78;stop-opacity:0.3" />
+                    <stop offset="100%" style="stop-color:#48BB78;stop-opacity:0.05" />
+                </linearGradient>
+                <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#2E7D32" />
+                    <stop offset="100%" style="stop-color:#66BB6A" />
+                </linearGradient>
+            </defs>
+            
+            <!-- Grid Lines -->
+            ${gridLines.join('')}
+            
+            <!-- Area Fill -->
+            <path d="${areaPath}" fill="url(#areaGradient)"/>
+            
+            <!-- Price Line -->
+            <path d="${pathData}" fill="none" stroke="url(#lineGradient)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            
+            <!-- Data Points -->
+            ${dataPoints.map((point, index) => {
+                const x = xScale(point.day);
+                const y = yScale(point.price);
+                const isStart = index === 0;
+                const isEnd = index === dataPoints.length - 1;
+                const isPeak = point === peakPoint;
+                const radius = isPeak ? 8 : isStart || isEnd ? 6 : 0;
+                const color = isPeak ? '#FFB300' : isStart || isEnd ? '#2E7D32' : 'transparent';
+                return `<circle cx="${x}" cy="${y}" r="${radius}" fill="${color}" stroke="white" stroke-width="2"/>`;
+            }).join('')}
+            
+            <!-- Peak Marker -->
+            <circle cx="${peakX}" cy="${peakY}" r="12" fill="none" stroke="#FFB300" stroke-width="2" stroke-dasharray="2,2"/>
+            <text x="${peakX}" y="${peakY - 20}" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFB300">Peak: ₹${peakPoint.price.toFixed(2)}</text>
+            
+            <!-- X-Axis Labels -->
+            ${xLabels.join('')}
+            
+            <!-- Current Price Marker -->
+            <line x1="${padding.left}" y1="${yScale(currentPrice)}" x2="${chartWidth - padding.right}" y2="${yScale(currentPrice)}" stroke="#4299E1" stroke-width="2" stroke-dasharray="6,4"/>
+            <text x="${chartWidth - padding.right + 10}" y="${yScale(currentPrice) + 4}" font-size="11" fill="#4299E1" font-weight="600">Current: ₹${currentPrice.toFixed(2)}</text>
+        </svg>
+    `;
+    
+    chartContainer.innerHTML = svg;
+}
+
+// ========================================
+// Initialize
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('AgriPredict AI Dashboard initialized');
+    
+    // Add smooth entrance animation to cards
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+});</script>
 </body>
 </html>
